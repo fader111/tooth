@@ -1,19 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Model Viewer</title>
     <style>
-        body { margin: 0; }
-        canvas { display: block; }
+        body {
+            margin: 0;
+        }
+
+        canvas {
+            display: block;
+        }
     </style>
 </head>
+
 <body>
     <script src="https://cdn.jsdelivr.net/npm/three/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three/examples/js/loaders/STLLoader.js"></script>
     <script>
         const scene = new THREE.Scene();
+        scene.background = new THREE.Color("lightblue");//0x808080); // Установка серого цвета
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
@@ -22,21 +30,21 @@
         const loader = new THREE.STLLoader();
 
         const objectsToLoad = [];
-        if (0) { // загрузка в цикле зубов из папки
-            for (let j =1; j<=4; j++) {
-                for (let i = j*10+1; i <= j*10+8; i++) {
+        if (1) { // загрузка в цикле зубов из папки
+            for (let j = 1; j <= 4; j++) {
+                for (let i = j * 10 + 1; i <= j * 10 + 8; i++) {
                     const fileName = `meshes/tooth${i}.stl`;
                     const position = new THREE.Vector3(0, 0, 0);
                     objectsToLoad.push({ file: fileName, position: position });
                 }
             }
         } else {
-        // objectsToLoad.push(`jaw.stl`); // 
-        const fileName = `jaw.stl`;
-        const position = new THREE.Vector3(0, 0, 0);
-        objectsToLoad.push({ file: fileName, position: position });
+            // objectsToLoad.push(`jaw.stl`); // 
+            // const fileName = `jaw.stl`;
+            const position = new THREE.Vector3(0, 0, 0);
+            objectsToLoad.push({ file: fileName, position: position });
         }
-        
+
         console.log("stl fnames: ", objectsToLoad);
         const meshes = [];
 
@@ -67,7 +75,7 @@
 
         objectsToLoad.forEach(async object => {
             // const fileExists = await checkFileExists(object.file);
-            
+
             // if (fileExists) {
             if (true) {
                 loader.load(object.file, function (geometry) {
@@ -84,7 +92,7 @@
                     mesh.scale.set(0.1, 0.1, 0.1);
                     mesh.rotation.x = -1;
                     mesh.position.copy(object.position);
-        
+
                     meshes.push(mesh);
                     scene.add(mesh);
                 });
@@ -92,9 +100,9 @@
                 console.log(`File ${object.file} not found.`);
             }
         });
- 
+
         console.log("stl's: ", meshes);
-        
+
         camera.position.z = 5;
 
         //Add ambient light to the scene
@@ -160,4 +168,5 @@
         animate();
     </script>
 </body>
+
 </html>
